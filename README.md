@@ -22,6 +22,13 @@ Doxygen can help you in three ways:
 3. You can also use doxygen for creating normal documentation (as I did for 
    the doxygen user manual and doxygen web-site).
 
+Fork
+----
+
+This fork changes the LaTeX output of Doxygen to use lstlisting package to 
+format code. Its just a quick hack but works for me.
+Author: Gerhard Gappmeier
+
 Download
 ---------
 The latest binaries and source of Doxygen can be downloaded from:
