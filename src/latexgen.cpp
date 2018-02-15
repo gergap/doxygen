@@ -72,6 +72,9 @@ void LatexCodeGenerator::codify(const char *str)
 {
   if (str)
   {
+      m_t << str;
+      return;
+
     const char *p=str;
     char c;
     //char cs[5];
@@ -161,6 +164,9 @@ void LatexCodeGenerator::writeCodeLink(const char *ref,const char *f,
                                    const char *anchor,const char *name,
                                    const char *)
 {
+    m_t << name;
+    return;
+
   static bool pdfHyperlinks = Config_getBool(PDF_HYPERLINKS);
   static bool usePDFLatex   = Config_getBool(USE_PDFLATEX);
   int l = qstrlen(name);
@@ -188,35 +194,6 @@ void LatexCodeGenerator::writeCodeLink(const char *ref,const char *f,
 
 void LatexCodeGenerator::writeLineNumber(const char *ref,const char *fileName,const char *anchor,int l)
 {
-  static bool usePDFLatex = Config_getBool(USE_PDFLATEX);
-  static bool pdfHyperlinks = Config_getBool(PDF_HYPERLINKS);
-  if (m_prettyCode)
-  {
-    QCString lineNumber;
-    lineNumber.sprintf("%05d",l);
-
-    if (fileName && !m_sourceFileName.isEmpty())
-    {
-      QCString lineAnchor;
-      lineAnchor.sprintf("_l%05d",l);
-      lineAnchor.prepend(stripExtensionGeneral(m_sourceFileName, ".tex"));
-      //if (!m_prettyCode) return;
-      if (usePDFLatex && pdfHyperlinks)
-      {
-        m_t << "\\Hypertarget{" << stripPath(lineAnchor) << "}";
-      }
-      writeCodeLink(ref,fileName,anchor,lineNumber,0);
-    }
-    else
-    {
-      codify(lineNumber);
-    }
-    m_t << " ";
-  }
-  else
-  {
-    m_t << l << " ";
-  }
 }
 
 
@@ -227,17 +204,15 @@ void LatexCodeGenerator::startCodeLine(bool)
 
 void LatexCodeGenerator::endCodeLine()
 {
-  codify("\n");
+    m_t << "\n";;
 }
 
 void LatexCodeGenerator::startFontClass(const char *name)
 {
-  m_t << "\\textcolor{" << name << "}{";
 }
 
 void LatexCodeGenerator::endFontClass()
 {
-  m_t << "}";
 }
 
 
@@ -2157,12 +2132,12 @@ void LatexGenerator::endConstraintList()
 
 void LatexGenerator::startCodeFragment()
 {
-  t << "\n\\begin{DoxyCode}\n";
+  t << "\n\\begin{lstlisting}\n";
 }
 
 void LatexGenerator::endCodeFragment()
 {
-  t << "\\end{DoxyCode}\n";
+  t << "\\end{lstlisting}\n";
 }
 
 void LatexGenerator::startInlineHeader()

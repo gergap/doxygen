@@ -291,11 +291,11 @@ void LatexDocVisitor::visit(DocVerbatim *s)
   {
     case DocVerbatim::Code: 
       {
-        m_t << "\n\\begin{DoxyCode}\n";
+        m_t << "\n\\begin{lstlisting}\n";
         Doxygen::parserManager->getParser(lang)
                               ->parseCode(m_ci,s->context(),s->text(),langExt,
                                           s->isExample(),s->exampleFile());
-        m_t << "\\end{DoxyCode}\n";
+        m_t << "\\end{lstlisting}\n";
       }
       break;
     case DocVerbatim::Verbatim: 
@@ -399,7 +399,7 @@ void LatexDocVisitor::visit(DocInclude *inc)
   {
     case DocInclude::IncWithLines:
       { 
-         m_t << "\n\\begin{DoxyCodeInclude}\n";
+         m_t << "\n\\begin{lstlisting}\n";
          QFileInfo cfi( inc->file() );
          FileDef fd( cfi.dirPath().utf8(), cfi.fileName().utf8() );
          Doxygen::parserManager->getParser(inc->extension())
@@ -415,11 +415,11 @@ void LatexDocVisitor::visit(DocInclude *inc)
                                            0,     // memberDef
                                            TRUE   // show line numbers
 					  );
-         m_t << "\\end{DoxyCodeInclude}" << endl;
+         m_t << "\\end{lstlisting}" << endl;
       }
       break;    
     case DocInclude::Include: 
-      m_t << "\n\\begin{DoxyCodeInclude}\n";
+      m_t << "\n\\begin{lstlisting}\n";
       Doxygen::parserManager->getParser(inc->extension())
                             ->parseCode(m_ci,inc->context(),
                                         inc->text(),langExt,inc->isExample(),
@@ -431,7 +431,7 @@ void LatexDocVisitor::visit(DocInclude *inc)
                                         0,     // memberDef
                                         FALSE
 			  		);
-      m_t << "\\end{DoxyCodeInclude}\n";
+      m_t << "\\end{lstlisting}\n";
       break;
     case DocInclude::DontInclude: 
       break;
@@ -447,7 +447,7 @@ void LatexDocVisitor::visit(DocInclude *inc)
       break;
     case DocInclude::Snippet:
       {
-         m_t << "\n\\begin{DoxyCodeInclude}\n";
+         m_t << "\n\\begin{lstlisting}\n";
          Doxygen::parserManager->getParser(inc->extension())
                                ->parseCode(m_ci,
                                            inc->context(),
@@ -456,14 +456,14 @@ void LatexDocVisitor::visit(DocInclude *inc)
                                            inc->isExample(),
                                            inc->exampleFile()
                                           );
-         m_t << "\\end{DoxyCodeInclude}" << endl;
+         m_t << "\\end{lstlisting}" << endl;
       }
       break;
     case DocInclude::SnipWithLines:
       {
          QFileInfo cfi( inc->file() );
          FileDef fd( cfi.dirPath().utf8(), cfi.fileName().utf8() );
-         m_t << "\n\\begin{DoxyCodeInclude}\n";
+         m_t << "\n\\begin{lstlisting}\n";
          Doxygen::parserManager->getParser(inc->extension())
                                ->parseCode(m_ci,
                                            inc->context(),
@@ -478,7 +478,7 @@ void LatexDocVisitor::visit(DocInclude *inc)
                                            0,     // memberDef
                                            TRUE   // show line number
                                           );
-         m_t << "\\end{DoxyCodeInclude}" << endl;
+         m_t << "\\end{lstlisting}" << endl;
       }
       break;
     case DocInclude::SnippetDoc: 
@@ -495,7 +495,7 @@ void LatexDocVisitor::visit(DocIncOperator *op)
   //    op->type(),op->isFirst(),op->isLast(),op->text().data());
   if (op->isFirst()) 
   {
-    if (!m_hide) m_t << "\n\\begin{DoxyCodeInclude}\n";
+    if (!m_hide) m_t << "\n\\begin{lstlisting}\n";
     pushEnabled();
     m_hide = TRUE;
   }
@@ -515,7 +515,7 @@ void LatexDocVisitor::visit(DocIncOperator *op)
   if (op->isLast())  
   {
     popEnabled();
-    if (!m_hide) m_t << "\n\\end{DoxyCodeInclude}\n";
+    if (!m_hide) m_t << "\n\\end{lstlisting}\n";
   }
   else
   {
